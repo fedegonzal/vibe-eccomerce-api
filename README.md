@@ -136,6 +136,14 @@ http DELETE localhost:8000/products/1 \
   "Authorization:Bearer estudiante123"
 ```
 
+#### 9. Cargar datos de prueba (Seed)
+```bash
+http POST localhost:8000/seed \
+  "Authorization:Bearer estudiante123"
+```
+
+**⚠️ Importante:** Este comando eliminará todos tus datos existentes y cargará datos de ejemplo desde el archivo `seed.yml`.
+
 ### Ejemplos con curl
 
 #### Crear una categoría
@@ -149,6 +157,12 @@ curl -X POST "http://localhost:8000/categories/" \
 #### Listar productos
 ```bash
 curl -X GET "http://localhost:8000/products/" \
+  -H "Authorization: Bearer estudiante123"
+```
+
+#### Cargar datos de prueba
+```bash
+curl -X POST "http://localhost:8000/seed" \
   -H "Authorization: Bearer estudiante123"
 ```
 
@@ -221,6 +235,70 @@ curl -X GET "http://localhost:8000/products/" \
 - `DELETE /products/{id}` - Eliminar producto
 - `POST /products/{id}/pictures` - Subir imágenes a producto
 
+### Datos de Prueba
+- `POST /seed` - Cargar datos de ejemplo y limpiar datos existentes
+
+## Funcionalidad de Seed (Datos de Prueba)
+
+### ¿Qué es el Seed?
+El endpoint `/seed` permite a los estudiantes cargar rápidamente un conjunto completo de datos de prueba sin tener que crear manualmente cada categoría, producto y etiqueta. Es especialmente útil para:
+
+- **Comenzar rápidamente**: Obtener datos listos para usar en segundos
+- **Probar aplicaciones**: Tener contenido real para probar interfaces frontend
+- **Demostraciones**: Mostrar funcionalidad con datos atractivos
+- **Desarrollo**: No perder tiempo creando datos de prueba manualmente
+
+### ¿Qué datos incluye?
+El archivo `seed.yml` contiene:
+
+**Categorías disponibles:**
+- **Verduras**: Zanahoria, Zapallo, Tomate, Batata, Tomate Cherry, Remolacha, Berenjena, Repollo
+- **Carnes**: Tapa de Asado, Pollo entero, Churrasco de Cerdo, Cordero, Roastbeef
+- **Higiene**: Antitranspirante, Jabón líquido, Desodorante, Hojas de afeitar
+- **Limpieza**: Limpiador multiuso, Papel higiénico, Lavandina, Detergente, Esponja
+
+**Etiquetas incluidas:**
+- "Promoción" - Para productos en oferta
+- "Orgánico" - Para productos naturales
+- "Producto local" - Para productos regionales
+
+**Características especiales:**
+- Todos los productos tienen precios realistas
+- Cada producto incluye descripción detallada
+- Las imágenes se descargan automáticamente desde internet
+- Se crean relaciones automáticas entre productos, categorías y etiquetas
+
+### ¿Cómo usar el Seed?
+
+**⚠️ Advertencia importante:** El comando de seed **eliminará todos tus datos existentes** (productos, categorías, etiquetas) antes de cargar los nuevos.
+
+```bash
+# Con HTTPie
+http POST localhost:8000/seed "Authorization:Bearer tu_token_unico"
+
+# Con curl
+curl -X POST "http://localhost:8000/seed" \
+  -H "Authorization: Bearer tu_token_unico"
+```
+
+**Respuesta esperada:**
+```json
+{
+  "message": "Datos de prueba cargados exitosamente",
+  "statistics": {
+    "categories_created": 4,
+    "products_created": 20,
+    "tags_created": 3,
+    "images_downloaded": 25,
+    "errors": []
+  },
+  "token": "tu_token_unico"
+}
+```
+
+### Personalizar datos de Seed
+Podés modificar el archivo `seed.yml` para agregar tus propios productos y categorías. El formato es simple y está documentado en el mismo archivo.
+
 ## Archivos e imágenes
 
 Las imágenes se almacenan en la carpeta `uploads/` y son accesibles públicamente a través de la URL `/uploads/nombre_archivo`.
@@ -260,3 +338,32 @@ Para dudas o problemas, contactar al profesor Federico Gonzalez Brizzio por emai
 **Universidad Nacional de Tierra del Fuego**  
 Tecnicatura Universitaria en Desarrollo de Aplicaciones  
 https://www.untdf.edu.ar/
+
+## Archivos del proyecto
+
+### Archivos principales
+- `main.py` - Aplicación FastAPI principal con todos los endpoints
+- `database.py` - Configuración de SQLite y modelos de datos
+- `schemas.py` - Esquemas Pydantic para validación de datos
+- `crud.py` - Operaciones de base de datos (Create, Read, Update, Delete)
+- `auth.py` - Manejo de autenticación con tokens Bearer
+- `seeder.py` - Funcionalidad para cargar datos de prueba
+
+### Archivos de configuración
+- `requirements.txt` - Dependencias de Python
+- `seed.yml` - Datos de prueba para cargar con el endpoint `/seed`
+- `start.sh` - Script para iniciar el servidor fácilmente
+- `.gitignore` - Archivos a ignorar en control de versiones
+
+### Archivos para deploy
+- `Procfile` - Configuración para Render.com
+- `runtime.txt` - Versión de Python para el deploy
+- `render.yaml` - Configuración detallada de Render.com
+
+### Scripts de prueba
+- `test_api.py` - Script para probar todos los endpoints
+- `test_seed.py` - Script específico para probar la funcionalidad de seed
+
+### Directorios
+- `uploads/` - Carpeta donde se almacenan las imágenes subidas
+- `.venv/` - Entorno virtual de Python (se crea automáticamente)

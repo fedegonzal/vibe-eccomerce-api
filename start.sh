@@ -7,6 +7,7 @@ echo "🚀 Iniciando servidor de API Ecommerce - UNTDF"
 echo "📍 Puerto: 8000"
 echo "📚 Documentación: http://localhost:8000/docs"
 echo "🔗 API: http://localhost:8000"
+echo "🌱 Seed endpoint: POST /seed (carga datos de prueba)"
 echo ""
 
 # Activar entorno virtual si existe

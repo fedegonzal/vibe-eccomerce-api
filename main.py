@@ -11,6 +11,7 @@ from pathlib import Path
 import database
 import schemas
 import crud
+import seeder
 from auth import get_current_token
 
 # Create FastAPI app
@@ -680,6 +681,76 @@ def upload_product_pictures(
     db.refresh(db_product)
     
     return {"picture_urls": picture_urls}
+
+# Seed endpoint
+@app.post(
+    "/seed",
+    summary="Cargar datos de prueba",
+    description="Limpia todos los datos del token y carga datos de prueba desde seed.yml",
+    tags=["Datos de Prueba"]
+)
+def seed_database(
+    db: Session = Depends(database.get_db),
+    token: str = Depends(get_current_token)
+):
+    """
+    ## Cargar datos de prueba desde seed.yml
+    
+    Este endpoint permite a los estudiantes cargar rápidamente un conjunto de datos de prueba 
+    para practicar con la API sin tener que crear manualmente categorías, productos y etiquetas.
+    
+    **⚠️ Advertencia:** Este endpoint eliminará TODOS los datos existentes para tu token 
+    (productos, categorías y etiquetas) antes de cargar los nuevos datos.
+    
+    **Qué hace:**
+    1. Elimina todos los productos, categorías y etiquetas de tu token
+    2. Lee el archivo `seed.yml` con datos de ejemplo
+    3. Crea nuevas categorías, productos y etiquetas
+    4. Descarga automáticamente todas las imágenes desde internet
+    5. Las guarda localmente en el servidor
+    
+    **Datos incluidos en seed.yml:**
+    - **Verduras**: Zanahoria, Zapallo, Tomate, Batata, etc.
+    - **Carnes**: Tapa de asado, Pollo, Churrasco, Cordero, etc.
+    - **Higiene**: Antitranspirante, Jabón, Desodorante, etc.
+    - **Limpieza**: Limpiador, Papel higiénico, Lavandina, etc.
+    
+    **Etiquetas incluidas:**
+    - "Promoción", "Orgánico", "Producto local"
+    
+    **Uso recomendado:**
+    - Ideal para comenzar rápidamente con datos de ejemplo
+    - Perfecto para probar tu aplicación frontend
+    - Útil para demostraciones y pruebas
+    
+    **Respuesta:**
+    Estadísticas detalladas sobre los datos cargados y errores si los hubiera.
+    """
+    try:
+        # Limpiar datos existentes
+        seeder.clean_token_data(db, token)
+        
+        # Cargar nuevos datos desde seed.yml
+        stats = seeder.load_seed_data(db, token)
+        
+        return {
+            "message": "Datos de prueba cargados exitosamente",
+            "statistics": stats,
+            "token": token
+        }
+    
+    except FileNotFoundError:
+        raise HTTPException(
+            status_code=404, 
+            detail="Archivo seed.yml no encontrado. Asegúrate de que el archivo existe en el directorio raíz."
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error interno del servidor al cargar datos: {str(e)}"
+        )
 
 if __name__ == "__main__":
     import uvicorn

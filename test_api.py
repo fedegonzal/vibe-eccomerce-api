@@ -81,6 +81,15 @@ def test_api():
         print(f"   📄 Producto: {product_detail['title']} - ${product_detail['price']}")
         print()
         
+        # Test seed endpoint
+        print("7. Probando endpoint de seed...")
+        response = requests.post(f"{BASE_URL}/seed", headers=HEADERS)
+        print(f"   ✅ Status: {response.status_code}")
+        seed_result = response.json()
+        print(f"   📄 Seed result: {seed_result['message']}")
+        print(f"   📊 Estadísticas: {seed_result['statistics']}")
+        print()
+        
         print("🎉 ¡Todas las pruebas completadas exitosamente!")
         print("🔗 Visita http://localhost:8000/docs para más información")
         

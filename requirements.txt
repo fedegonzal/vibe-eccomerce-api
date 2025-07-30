@@ -4,3 +4,6 @@ sqlalchemy
 python-multipart
 pillow
 python-jose[cryptography]
+pyyaml
+requests
+aiofiles

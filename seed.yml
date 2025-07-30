@@ -1,0 +1,142 @@
+Verduras:
+  title: "Verduras"
+  description: "Hortalizas frescas y saludables"
+  picture: "https://media.scoolinary.app/blog/images/2021/02/hortalizas-portada.jpg"
+  items:
+    - title: "Zanahoria"
+      description: "Zanahorias dulces y crujientes"
+      price: 1.20
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2391.jpg"]
+      tags: ["Promoción", "Orgánico"]
+
+    - title: "Zapallo Anco"
+      description: "Zapallo anco fresco, ideal para sopas"
+      price: 1.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000000060/60.jpg"]
+
+    - title: "Tomate Redondo"
+      description: "Tomates orgánicos, perfectos para ensaladas"
+      price: 2.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2390.jpg"]
+
+    - title: "Batata"
+      description: "Batatas dulces y nutritivas"
+      price: 1.80
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2375.jpg"]
+      tags: ["Orgánico"]
+    
+    - title: "Tomate Cherry"
+      description: "Tomates cherry frescos, ideales para picar"
+      price: 2.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000003000/3307.jpg"]
+
+    - title: "Remolacha sin hoja"
+      description: "Remolachas frescas, ricas en hierro"
+      price: 1.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2386.jpg"]
+      tags: ["Promoción"]
+
+    - title: "Berenjena"
+      description: "Berenjenas moradas, perfectas para asar"
+      price: 1.70
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2376.jpg"]
+      tags: ["Orgánico", "Producto local"]
+
+    - title: "Repollo Colorado"
+      description: "Repollo colorado fresco, ideal para ensaladas"
+      price: 1.80
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2389.jpg"]
+
+Carnes:
+  title: "Carnes"
+  description: "Carnes frescas y de calidad"
+  picture: "https://restauranteventapazo.es/wp-content/uploads/2018/05/carne-roja.jpg"
+  items:
+    - title: "Tapa de Asado"
+      description: "Tapa de asado de res, ideal para parrilla"
+      price: 10.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000001000/1296.jpg"]
+      tags: ["Promoción"]
+
+    - title: "Pollo entero"
+      description: "Pollo entero fresco, ideal para asar"
+      price: 8.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2325.jpg"]
+    
+    - title: "Churrasco de Cerdo"
+      description: "Churrasco de cerdo jugoso y tierno"
+      price: 9.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000000000/542.jpg"]
+    
+    - title: "Cordero entero x kg"
+      description: "Cordero entero, ideal para asados familiares"
+      price: 12.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000026000/26798.jpg"]
+      tags: ["Producto local"]
+    
+    - title: "Roastbeef"
+      description: "Roastbeef de res, perfecto para sandwiches"
+      price: 11.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2335.jpg"]
+
+Higiene:
+  title: "Higiene"
+  description: "Productos de higiene personal"
+  picture: "https://ghc.com.mx/wp-content/uploads/2021/09/laverse_manos-1200x600.jpg"
+  items:
+    - title: "Antitranspirante en aerosol"
+      description: "Antitranspirante en aerosol con aroma fresco"
+      price: 3.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000025000/25731.jpg"]
+    
+    - title: "Jabón líquido de manos"
+      description: "Jabón líquido antibacterial para manos"
+      price: 2.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000026000/26153.jpg"]
+      tags: ["Promoción"]
+    
+    - title: "Desodorante roll-on"
+      description: "Desodorante roll-on suave para piel sensible"
+      price: 2.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000014000/14511.jpg"]
+
+    - title: "Hojas de afeitar"
+      description: "Hojas de afeitar desechables, paquete de 6"
+      price: 1.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000018000/18700.jpg"]
+    
+    - title: "Jabón líquido repuesto"
+      description: "Jabón líquido reposición, 500 ml"
+      price: 4.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000022000/22973.jpg"]
+
+Limpieza:
+  title: "Limpieza"
+  description: "Productos de limpieza para el hogar"
+  picture: "https://mejorconsalud.as.com/wp-content/uploads/2018/07/limpieza-hogar.jpg"
+  items:
+    - title: "Limpiador concentrado multiuso lavanda"
+      description: "Limpiador multiuso concentrado con aroma a lavanda"
+      price: 3.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000005000/5849.jpg"]
+    
+    - title: "Papel Higiénico triple hoja"
+      description: "Papel higiénico suave, paquete de 4 rollos"
+      price: 2.00
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000027000/27318.jpg"]
+    
+    - title: "Lavandina x 1L"
+      description: "Lavandina concentrada, ideal para desinfección"
+      price: 1.80
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2498.jpg"]
+    
+    - title: "Detergente líquido x 500cc"
+      description: "Detergente líquido para lavar platos, 500 cc"
+      price: 1.20
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000028000/28086.jpg"]
+    
+    - title: "Esponja de fibra cuadriculada"
+      description: "Esponja de fibra cuadriculada para lavar platos"
+      price: 0.50
+      pictures: ["https://d1on8qs0xdu5jz.cloudfront.net/web/images/productos/c/0000002000/2491.jpg"]
+      tags: ["Promoción"]
