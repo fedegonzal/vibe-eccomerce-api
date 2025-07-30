@@ -27,6 +27,7 @@ La API incluye las siguientes entidades:
 - Subida y gestión de imágenes
 - Base de datos SQLite
 - Documentación automática con Swagger UI
+- **Soporte CORS**: Permite peticiones desde cualquier origen (localhost, entornos de desarrollo, etc.)
 
 ## Instalación
 
@@ -73,6 +74,113 @@ Todos los endpoints requieren un token Bearer en el header `Authorization`. Este
 
 ```bash
 Authorization: Bearer tu_token_aqui
+```
+
+### Soporte CORS para Desarrollo Frontend
+
+La API incluye soporte completo para CORS (Cross-Origin Resource Sharing), lo que permite que las aplicaciones frontend se conecten desde cualquier origen:
+
+- ✅ **localhost** (React, Vue, Angular en desarrollo)
+- ✅ **127.0.0.1** (servidores locales)
+- ✅ **file:///** (archivos HTML estáticos)
+- ✅ **Netlify, Vercel, GitHub Pages** (despliegues de frontend)
+- ✅ **Cualquier dominio personalizado**
+
+Esto significa que puedes desarrollar tu frontend en cualquier puerto (3000, 5173, 8080, etc.) y consumir la API sin problemas de CORS.
+
+**Ejemplo de petición desde JavaScript:**
+```javascript
+// Desde cualquier frontend (React, Vue, Angular, Vanilla JS)
+fetch('http://localhost:8000/products/', {
+  headers: {
+    'Authorization': 'Bearer tu_token_aqui',
+    'Content-Type': 'application/json'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data));
+```
+
+**💡 Tip para desarrolladores**: Puedes crear un archivo HTML simple para probar CORS rápidamente:
+```html
+<!-- test_cors.html -->
+<script>
+fetch('http://localhost:8000/products/', {
+  headers: { 'Authorization': 'Bearer tu_token' }
+})
+.then(res => res.json())
+.then(data => console.log('CORS funcionando!', data));
+</script>
+```
+
+### Integración con Frameworks Frontend
+
+#### React.js / Next.js
+```javascript
+// Configurar cliente API
+const API_BASE = 'http://localhost:8000';
+const token = 'tu_token_estudiante';
+
+const apiClient = async (endpoint, options = {}) => {
+  const response = await fetch(`${API_BASE}${endpoint}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      ...options.headers
+    },
+    ...options
+  });
+  return response.json();
+};
+
+// Usar en componentes
+const productos = await apiClient('/products/');
+```
+
+#### Vue.js / Nuxt.js
+```javascript
+// En tu store o composable
+export const useApi = () => {
+  const baseURL = 'http://localhost:8000';
+  const token = 'tu_token_estudiante';
+  
+  const $fetch = async (endpoint, options = {}) => {
+    return fetch(`${baseURL}${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      ...options
+    }).then(res => res.json());
+  };
+  
+  return { $fetch };
+};
+```
+
+#### Angular
+```typescript
+// api.service.ts
+@Injectable()
+export class ApiService {
+  private baseUrl = 'http://localhost:8000';
+  private token = 'tu_token_estudiante';
+  
+  constructor(private http: HttpClient) {}
+  
+  private getHeaders() {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+  
+  getProducts() {
+    return this.http.get(`${this.baseUrl}/products/`, {
+      headers: this.getHeaders()
+    });
+  }
+}
 ```
 
 ### Ejemplos con HTTPie
