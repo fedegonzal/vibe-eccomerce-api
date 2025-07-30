@@ -7,11 +7,16 @@ import os
 import uuid
 import shutil
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Cargar variables de entorno
+load_dotenv()
 
 import database
 import schemas
 import crud
 import seeder
+import cleaner
 from auth import get_current_token
 
 # Create FastAPI app
@@ -62,6 +67,21 @@ uploads_dir.mkdir(exist_ok=True)
 
 # Mount static files for serving images
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+# Admin token verification
+def verify_admin_token(token: str) -> bool:
+    """Verifica si el token corresponde al administrador"""
+    admin_token = os.getenv("ADMIN_TOKEN")
+    return admin_token and token == admin_token
+
+def get_admin_token(credentials = Depends(get_current_token)) -> str:
+    """Dependency para verificar token de administrador"""
+    if not verify_admin_token(credentials):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Token de administrador requerido"
+        )
+    return credentials
 
 # Root endpoint
 @app.get(
@@ -750,6 +770,63 @@ def seed_database(
         raise HTTPException(
             status_code=500, 
             detail=f"Error interno del servidor al cargar datos: {str(e)}"
+        )
+
+# Clean endpoint (internal use only)
+@app.post(
+    "/clean",
+    summary="Limpiar sistema completo (Administrador)",
+    description="Elimina todos los datos y archivos del sistema. Requiere token de administrador.",
+    tags=["Administración"]
+)
+def clean_system(
+    db: Session = Depends(database.get_db),
+    admin_token: str = Depends(get_admin_token)
+):
+    """
+    ## Limpiar sistema completo (Solo Administrador)
+    
+    Este endpoint elimina TODOS los datos y archivos del sistema de forma permanente.
+    
+    **🔒 Seguridad:**
+    - Requiere token de administrador especial definido en variable de entorno `ADMIN_TOKEN`
+    - Los estudiantes NO tienen acceso a este token
+    - Solo para uso administrativo
+    
+    **⚠️ PELIGRO:** Este endpoint eliminará:
+    - Todos los productos de todos los estudiantes
+    - Todas las categorías de todos los estudiantes  
+    - Todas las etiquetas de todos los estudiantes
+    - Todos los archivos de imágenes subidos
+    
+    **Casos de uso:**
+    - Limpiar el sistema al final del semestre
+    - Resetear la base de datos para nuevos estudiantes
+    - Mantenimiento general del sistema
+    - Preparar ambiente para nuevas clases
+    
+    **Respuesta:**
+    Estadísticas detalladas de todos los elementos eliminados.
+    """
+    """
+    Endpoint interno para limpieza completa del sistema.
+    Requiere token de administrador definido en variable de entorno ADMIN_TOKEN.
+    
+    ⚠️ PELIGRO: Este endpoint eliminará TODOS los datos y archivos del sistema.
+    """
+    try:
+        stats = cleaner.clean_everything(db)
+        
+        return {
+            "message": "Sistema limpiado completamente",
+            "statistics": stats,
+            "warning": "Todos los datos y archivos han sido eliminados"
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error interno del servidor durante la limpieza: {str(e)}"
         )
 
 if __name__ == "__main__":

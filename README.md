@@ -144,6 +144,14 @@ http POST localhost:8000/seed \
 
 **⚠️ Importante:** Este comando eliminará todos tus datos existentes y cargará datos de ejemplo desde el archivo `seed.yml`.
 
+#### 10. Limpiar sistema completo (Solo Administrador)
+```bash
+http POST localhost:8000/clean \
+  "Authorization:Bearer token_administrador_secreto"
+```
+
+**🔒 Nota:** Solo funciona con el token de administrador configurado en `.env`
+
 ### Ejemplos con curl
 
 #### Crear una categoría
@@ -164,6 +172,12 @@ curl -X GET "http://localhost:8000/products/" \
 ```bash
 curl -X POST "http://localhost:8000/seed" \
   -H "Authorization: Bearer estudiante123"
+```
+
+#### Limpiar sistema (Solo Administrador)
+```bash
+curl -X POST "http://localhost:8000/clean" \
+  -H "Authorization: Bearer token_administrador_secreto"
 ```
 
 ## Estructura de datos
@@ -238,6 +252,9 @@ curl -X POST "http://localhost:8000/seed" \
 ### Datos de Prueba
 - `POST /seed` - Cargar datos de ejemplo y limpiar datos existentes
 
+### Administración
+- `POST /clean` - Limpiar sistema completo (requiere token de administrador)
+
 ## Funcionalidad de Seed (Datos de Prueba)
 
 ### ¿Qué es el Seed?
@@ -298,6 +315,79 @@ curl -X POST "http://localhost:8000/seed" \
 
 ### Personalizar datos de Seed
 Podés modificar el archivo `seed.yml` para agregar tus propios productos y categorías. El formato es simple y está documentado en el mismo archivo.
+
+## Funcionalidad de Administración (Clean)
+
+### ¿Qué es el Clean?
+El endpoint `/clean` es una herramienta administrativa que permite **limpiar completamente el sistema**, eliminando todos los datos de todos los estudiantes y archivos subidos. Es útil para:
+
+- **Mantenimiento semestral**: Limpiar datos al final de cada cuatrimestre
+- **Preparación de clases**: Resetear el sistema para nuevos grupos
+- **Gestión de espacio**: Eliminar archivos acumulados
+- **Inicio de nuevos proyectos**: Comenzar con base de datos limpia
+
+### ⚠️ Seguridad del Endpoint Clean
+
+**🔒 Token de Administrador:**
+- Requiere un token especial definido en el archivo `.env`
+- Los estudiantes **NO tienen acceso** a este token
+- Solo el profesor/administrador conoce este token
+- Está configurado en `ADMIN_TOKEN` en las variables de entorno
+
+**🛡️ Protección:**
+- Tokens incorrectos reciben error 403 (Acceso Denegado)
+- No afecta el funcionamiento normal de la API para estudiantes
+- Completamente seguro para incluir en documentación pública
+
+### ¿Qué elimina el Clean?
+
+**📊 Datos de Base de Datos:**
+- **Todos los productos** de todos los estudiantes
+- **Todas las categorías** de todos los estudiantes
+- **Todas las etiquetas** de todos los estudiantes
+
+**📁 Archivos del Sistema:**
+- **Todas las imágenes** subidas en `/uploads/`
+- Recrea el directorio `uploads/` vacío
+
+### ¿Cómo usar el Clean?
+
+**Solo para administradores con el token correcto:**
+
+```bash
+# Con HTTPie (requiere token de administrador)
+http POST localhost:8000/clean "Authorization:Bearer token_administrador_secreto"
+
+# Con curl (requiere token de administrador)  
+curl -X POST "http://localhost:8000/clean" \
+  -H "Authorization: Bearer token_administrador_secreto"
+```
+
+**Respuesta esperada:**
+```json
+{
+  "message": "Sistema limpiado completamente",
+  "statistics": {
+    "products_deleted": 45,
+    "categories_deleted": 12,
+    "tags_deleted": 8,
+    "files_deleted": 67,
+    "errors": []
+  },
+  "warning": "Todos los datos y archivos han sido eliminados"
+}
+```
+
+### Configuración del Token de Administrador
+
+El token se configura en el archivo `.env` (no incluido en el repositorio por seguridad):
+
+```bash
+# En .env (crear desde .env.example)
+ADMIN_TOKEN=tu_token_super_secreto_aqui
+```
+
+**Para estudiantes:** Este endpoint aparece en la documentación pero no pueden usarlo sin el token administrativo correcto.
 
 ## Archivos e imágenes
 
